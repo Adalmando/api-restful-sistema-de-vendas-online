@@ -23,7 +23,7 @@ public class Cliente {
     @Column(length = 11, unique = true, nullable = false)
     private String cpf;
 
-    @OneToMany( mappedBy = "cliente")
+    @OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<Pedido> pedidos;
 
     public Cliente(String nome, String cpf) {

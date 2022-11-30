@@ -32,6 +32,13 @@ public class Pedido {
     @OneToMany( mappedBy = "pedido")
     private List<ItemPedido> itens;
 
+    public Pedido(){
+        this.setCliente(null);
+        this.setDataPedido(null);
+        this.setTotal(null);
+        this.setItens(null);
+    }
+
     @Override
     public String toString() {
         return "Pedido{" +

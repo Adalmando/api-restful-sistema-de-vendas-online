@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
-
-
     Cliente findByNomeLike(String nome);
 
     // Com o native query ativado eu digo que o script de busca vai rodar na linguagem do banco de dados que estou usando, nesse caso, H2

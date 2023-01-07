@@ -1,21 +1,35 @@
 package com.github.adalmando.vendas.domain.rest.controllers;
 
+import com.github.adalmando.vendas.domain.entity.Cliente;
+import com.github.adalmando.vendas.domain.repository.ClienteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/clientes")
 public class ClienteController {
 
+    private ClienteRepository clienteRepository;
+    public ClienteController(ClienteRepository clienteRepository){
+        this.clienteRepository = clienteRepository;
+    }
 
-    @RequestMapping(
-            value = {"/welcome/{nome}", "/bemvindo/{nome}"}, // Nesse request, posso passar 2 rotas para o mesmo caminho
-            method = RequestMethod.GET)  // sempre tenho que definir o method do método request.
+    @GetMapping("/api/clientes/{id}")
     @ResponseBody
-    public String helloCliente(@PathVariable("nome") String nomeCliente){
-        return String.format("Welcome, " + nomeCliente);
+    public ResponseEntity getClienteById(@PathVariable Integer id) // com o pathvariable eu digo que o {id}
+    {                                                                       // da URL é o mesmo id dos parametros passados.
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+
+        if(cliente.isPresent()) {
+            return ResponseEntity.ok(cliente.get() );
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity save(Cliente cliente){
+        
     }
 }

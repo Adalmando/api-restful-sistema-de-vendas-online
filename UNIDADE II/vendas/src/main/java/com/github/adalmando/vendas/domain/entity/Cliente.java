@@ -1,5 +1,6 @@
 package com.github.adalmando.vendas.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ public class Cliente {
     @Column(length = 11, unique = true, nullable = false)
     private String cpf;
 
+    @JsonIgnore
     @OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<Pedido> pedidos;
 

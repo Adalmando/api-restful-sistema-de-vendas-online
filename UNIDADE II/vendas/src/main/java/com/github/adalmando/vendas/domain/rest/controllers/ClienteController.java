@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
 
@@ -20,7 +20,7 @@ public class ClienteController {
         this.clienteRepository = clienteRepository;
     }
 
-    @GetMapping("/clientes/{id}")
+    @GetMapping("/visualizar/{id}")
     @ResponseBody
     public ResponseEntity getClienteById( @PathVariable Integer id){
         Optional<Cliente> cliente = clienteRepository.findById(id);
@@ -31,13 +31,20 @@ public class ClienteController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/clientes")
-    @ResponseBody
+    @PostMapping("/salvar")
     public ResponseEntity save(@RequestBody Cliente cliente){
         Cliente clienteSalvo = clienteRepository.save(cliente);
         return ResponseEntity.ok(clienteSalvo);
     }
+
+    @DeleteMapping("/deletar/{id}")
+    @ResponseBody
+    public ResponseEntity delete( @PathVariable Integer id){
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        if(cliente.isPresent()){
+            clienteRepository.delete(cliente.get());
+            return ResponseEntity.noContent().build();
+        }
+
+    }
 }
-
-
-

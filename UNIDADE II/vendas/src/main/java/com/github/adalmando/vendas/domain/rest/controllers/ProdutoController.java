@@ -30,7 +30,7 @@ public class ProdutoController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public void delete (@PathVariable Integer id){
         produtoRepository.findById(id).
                 map(produto -> {produtoRepository.delete(produto);

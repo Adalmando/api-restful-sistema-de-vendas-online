@@ -1,8 +1,6 @@
 package com.github.adalmando.vendas.domain.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,12 +10,15 @@ import java.math.BigDecimal;
 @Setter
 @Table(name = "produto")
 @ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(length = 100)
     private String descricao;
 
 

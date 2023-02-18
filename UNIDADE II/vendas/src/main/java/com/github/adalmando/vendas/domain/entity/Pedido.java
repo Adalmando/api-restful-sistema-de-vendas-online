@@ -1,16 +1,17 @@
 package com.github.adalmando.vendas.domain.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "pedido")
 public class Pedido {
 
@@ -31,25 +32,5 @@ public class Pedido {
 
     @OneToMany( mappedBy = "pedido")
     private List<ItemPedido> itens;
-
-    public Pedido(){
-        this.setCliente(null);
-        this.setDataPedido(null);
-        this.setTotal(null);
-        this.setItens(null);
-    }
-
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "id=" + id +
-                ", dataPedido=" + dataPedido +
-                ", total=" + total +
-                '}';
-    }
-
-    //    public String toString(){
-//        return "Pedido: id: " + this.getId() + " cliente: " +this.getCliente().getNome() + " data: " + this.getDataPedido() + " total: " + this.getTotal();
-//    }
 
 }

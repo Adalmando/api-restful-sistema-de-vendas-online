@@ -1,13 +1,13 @@
 package com.github.adalmando.vendas.domain.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "itempedido")
 public class ItemPedido{
 
@@ -23,6 +23,7 @@ public class ItemPedido{
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
+    @Column(name = "quantidade")
     private Integer quantidade;
 
 }

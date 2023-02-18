@@ -1,15 +1,15 @@
 package com.github.adalmando.vendas.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "cliente")
 public class Cliente {
 
@@ -27,16 +27,4 @@ public class Cliente {
     @JsonIgnore
     @OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<Pedido> pedidos;
-
-    public Cliente(String nome) {
-        this.setNome(nome);
-    }
-
-    public Cliente() {
-        this.setNome("");
-    }
-
-    public String toString(){
-        return "Cliente: id: " + this.getId() + " nome: " + this.getNome();
-    }
 }

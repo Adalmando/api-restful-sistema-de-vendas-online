@@ -1,4 +1,4 @@
-package com.github.adalmando.vendas.domain.rest.controllers;
+package com.github.adalmando.vendas.rest.controller;
 
 import com.github.adalmando.vendas.domain.entity.Produto;
 import com.github.adalmando.vendas.domain.repository.ProdutoRepository;
@@ -19,7 +19,7 @@ public class ProdutoController {
     @GetMapping("{id}")
     public Produto getById (@PathVariable Integer id){
         return produtoRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "cliente não encontrado"));
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "produto não encontrado"));
     }
 
 
@@ -31,20 +31,25 @@ public class ProdutoController {
 
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete (@PathVariable Integer id){
         produtoRepository.findById(id).
                 map(produto -> {produtoRepository.delete(produto);
                 return produto;
-                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nenhum produto com esse nome"));
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "nenhum produto com esse nome"));
     }
 
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update (@PathVariable Integer id, @RequestBody Produto produto){
-        produtoRepository.findById(id).map(produtoEncontrado -> {produto.setId(produtoEncontrado.getId());
-        return produto;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "produto não encontrado!"));
+        produtoRepository.findById(id)
+                .map(produtoEncontrado -> {produto.setId(produtoEncontrado.getId());
+                    produtoRepository.save(produto);
+                        return produtoEncontrado;
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "produto não encontrado!"));
     }
 
 

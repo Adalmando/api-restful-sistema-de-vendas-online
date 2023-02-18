@@ -1,4 +1,4 @@
-package com.github.adalmando.vendas.domain.rest.controllers;
+package com.github.adalmando.vendas.rest.controller;
 
 import com.github.adalmando.vendas.domain.entity.Cliente;
 import com.github.adalmando.vendas.domain.repository.ClienteRepository;
@@ -50,8 +50,8 @@ public class ClienteController {
     public void update (@PathVariable Integer id, @RequestBody Cliente cliente ){
         clienteRepository.findById(id)
                 .map(clienteExistente -> {cliente.setId(clienteExistente.getId());
-                clienteRepository.save(cliente);
-                return clienteExistente;
+                    clienteRepository.save(cliente);
+                    return clienteExistente;
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "cliente não encontrado!"));
     }

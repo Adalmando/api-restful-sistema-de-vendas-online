@@ -14,6 +14,7 @@ import com.github.adalmando.vendas.rest.dto.PedidoDTO;
 import com.github.adalmando.vendas.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,8 +30,8 @@ public class PedidoServiceImpl implements PedidoService {
     private final ItemRepository itemRepository;
 
 
-
     @Override
+    @Transactional // garante que, ou tudo é salvo com sucesso ou se um der errado, tudo é cancelado!
     public Pedido salvar(PedidoDTO dto) {
         Integer idCliente = dto.getCliente();
         Cliente cliente = clienteRepository.findById(idCliente)
@@ -41,11 +42,12 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+
         List<ItemPedido> itensPedido = converterItens(pedido, dto.getItens());
         pedidoRepository.save(pedido);
         itemRepository.saveAll(itensPedido);
-
-        return null;
+        pedido.setItens(itensPedido);
+        return pedido;
     }
 
 

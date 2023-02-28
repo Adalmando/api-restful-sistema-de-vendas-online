@@ -30,7 +30,7 @@ public class ClienteController {
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) // Retorna o codigo 200 se a requisição ocorrer com sucesso!
+    @ResponseStatus(HttpStatus.CREATED) // Retorna o codigo 201 se a requisição ocorrer com sucesso!
     public Cliente save(@RequestBody Cliente cliente){
         return clienteRepository.save(cliente);
     }
@@ -59,12 +59,9 @@ public class ClienteController {
 
     @GetMapping
     public List<Cliente> findAllClientes ( Cliente filtro){
-
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-
         Example example = Example.of(filtro, matcher);
         return clienteRepository.findAll(example);
-
     }
 }

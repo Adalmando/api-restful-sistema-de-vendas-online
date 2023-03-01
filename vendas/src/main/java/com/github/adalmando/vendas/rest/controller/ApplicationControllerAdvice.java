@@ -1,5 +1,4 @@
 package com.github.adalmando.vendas.rest.controller;
-
 import com.github.adalmando.vendas.exception.RegraNegocioException;
 import com.github.adalmando.vendas.rest.ApiErrors;
 import org.springframework.http.HttpStatus;

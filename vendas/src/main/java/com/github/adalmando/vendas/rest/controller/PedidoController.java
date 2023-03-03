@@ -3,13 +3,13 @@ package com.github.adalmando.vendas.rest.controller;
 import com.github.adalmando.vendas.domain.entity.ItemPedido;
 import com.github.adalmando.vendas.domain.entity.Pedido;
 import com.github.adalmando.vendas.rest.dto.InformacaoItemPedidoDTO;
+import com.github.adalmando.vendas.rest.dto.InformacoesPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.PedidoDTO;
 import com.github.adalmando.vendas.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-import com.github.adalmando.vendas.rest.dto.InformacoesPedidoDTO;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.format.DateTimeFormatter;
@@ -23,6 +23,8 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+
+    // EndPoint que cadastra um pedido e salva no banco de dados
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Integer save (@RequestBody PedidoDTO dto){
@@ -30,6 +32,7 @@ public class PedidoController {
         return pedido.getId();
     }
 
+    // EndPoint que busca o pedido pelo id e retorna o pedido completo com a lista de itens do pedido.
     @GetMapping("{id}")
     public InformacoesPedidoDTO getById(@PathVariable  Integer id){
         return pedidoService
@@ -53,14 +56,10 @@ public class PedidoController {
     }
 
     private List<InformacaoItemPedidoDTO> converter (List<ItemPedido> itens){
-        if(CollectionUtils.isEmpty(itens))
-            return Collections.emptyList(); // para retornar uma lista vazia e n um objeto null
-        return itens.stream().map( itemPedido -> InformacaoItemPedidoDTO
-                .builder()
-                .descricao(itemPedido.getProduto().getDescricao())
-                .precoUnitario(itemPedido.getProduto().getPreco())
-                .quantidade(itemPedido.getQuantidade())
-                .build();
+        if(CollectionUtils.isEmpty(itens)){ // Se a lista que ta sendo passada como parametro estiver vazia:
+            return Collections.emptyList(); // A gente retorna uma lista vazia para não retornar um objeto null
+        }
+        return
     }
 
 }

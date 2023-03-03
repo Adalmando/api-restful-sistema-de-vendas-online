@@ -51,14 +51,10 @@ public class PedidoServiceImpl implements PedidoService {
         return pedido;
     }
 
-
-
     private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens){
-
         if(itens.isEmpty()){
             throw new RegraNegocioException("Não existem itens no pedido!");
         }
-
         return itens
                 .stream()
                 .map( dto -> {

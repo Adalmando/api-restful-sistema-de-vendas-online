@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InformacoesPedidoDTO {
+public class InformacoesPedidoDTO { //essa classe tem todos os dados publicos do pedido e cliente que o fez, podem ser expostos
 
     private Integer codigo;
     private String nomeCliente;

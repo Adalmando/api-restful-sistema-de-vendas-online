@@ -25,10 +25,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
 
-    private final PedidoRepository pedidoRepository;
-    private final ClienteRepository clienteRepository;
-    private final ProdutoRepository produtoRepository;
-    private final ItemRepository itemRepository;
+    private PedidoRepository pedidoRepository;
+    private ClienteRepository clienteRepository;
+    private ProdutoRepository produtoRepository;
+    private ItemRepository itemRepository;
+
+    public PedidoServiceImpl(PedidoRepository pedidoRepository,
+                             ClienteRepository clienteRepository,
+                             ProdutoRepository produtoRepository,
+                             ItemRepository itemRepository)
+    {
+        this.pedidoRepository = pedidoRepository;
+        this.clienteRepository = clienteRepository;
+        this.produtoRepository = produtoRepository;
+        this.itemRepository = itemRepository;
+    }
 
 
     @Override

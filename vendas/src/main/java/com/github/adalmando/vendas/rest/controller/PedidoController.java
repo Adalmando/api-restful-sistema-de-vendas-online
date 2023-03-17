@@ -15,14 +15,17 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/pedidos")
 public class PedidoController {
 
-    @Autowired
     private PedidoService pedidoService;
 
+    public PedidoController(PedidoService pedidoService){
+        this.pedidoService = pedidoService;
+    }
 
     // EndPoint que cadastra um pedido e salva no banco de dados
     @PostMapping
@@ -59,9 +62,14 @@ public class PedidoController {
         if(CollectionUtils.isEmpty(itens)){ // Se a lista que ta sendo passada como parametro estiver vazia:
             return Collections.emptyList(); // A gente retorna uma lista vazia para não retornar um objeto null
         }
-        return
+        return itens.stream().map( item -> InformacaoItemPedidoDTO
+                .builder()
+                .descricao(item.getProduto().getDescricao())
+                .precoUnitario(item.getProduto().getPreco())
+                .quantidade(item.getQuantidade())
+                .build())
+                .collect(Collectors.toList()); // transforma o return em uma list.
     }
-
 }
 
 

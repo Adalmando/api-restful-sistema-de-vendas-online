@@ -8,13 +8,12 @@ import com.github.adalmando.vendas.rest.dto.InformacaoItemPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.InformacoesPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.PedidoDTO;
 import com.github.adalmando.vendas.service.PedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +32,7 @@ public class PedidoController {
     // EndPoint que cadastra um pedido e salva no banco de dados
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save (@RequestBody PedidoDTO dto){
+    public Integer save (@RequestBody @Valid PedidoDTO dto){
         Pedido pedido = pedidoService.salvar(dto);
         return pedido.getId();
     }

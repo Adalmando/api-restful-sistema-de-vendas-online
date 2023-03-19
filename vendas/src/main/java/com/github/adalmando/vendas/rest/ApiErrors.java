@@ -16,4 +16,8 @@ public class ApiErrors {
         // A classe arrays tem o metodo as list que recebe um objeto e transforma em um arraylist
         this.Errors = Arrays.asList(mensagemErro);
     }
+
+    public ApiErrors(List<String> errors) {
+        this.Errors = errors;
+    }
 }

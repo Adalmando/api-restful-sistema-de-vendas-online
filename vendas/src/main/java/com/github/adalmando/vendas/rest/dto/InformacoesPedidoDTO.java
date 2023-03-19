@@ -19,6 +19,7 @@ public class InformacoesPedidoDTO { //essa classe tem todos os dados publicos do
     private String nomeCliente;
     private String cpf;
     private BigDecimal totalPedido;
+    private String status;
     private List<InformacaoItemPedidoDTO> itens;
     private String dataPedido;
 

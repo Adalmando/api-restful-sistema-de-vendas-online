@@ -1,4 +1,6 @@
 package com.github.adalmando.vendas.rest.controller;
+
+import com.github.adalmando.vendas.exception.PedidoNaoEncontradoException;
 import com.github.adalmando.vendas.exception.RegraNegocioException;
 import com.github.adalmando.vendas.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -14,5 +16,11 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleRegraNegocioException(RegraNegocioException ex){
         String mensagemErro = ex.getMessage();
         return new ApiErrors(mensagemErro);
+    }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNaoEncontradoException(PedidoNaoEncontradoException ex){
+        return new ApiErrors(ex.getMessage());
     }
 }

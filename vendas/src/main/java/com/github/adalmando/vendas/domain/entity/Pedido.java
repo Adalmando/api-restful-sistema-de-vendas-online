@@ -1,5 +1,6 @@
 package com.github.adalmando.vendas.domain.entity;
 
+import com.github.adalmando.vendas.domain.enums.StatusPedido;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +30,10 @@ public class Pedido {
 
     @Column(name = "total_pedido", precision = 20, scale = 2)
     private BigDecimal total;
+
+    @Enumerated(EnumType.STRING) // diz que no banco será guardado em formato string esse enum
+    @Column(name = "status_pedido")
+    private StatusPedido status;
 
     @OneToMany( mappedBy = "pedido")
     private List<ItemPedido> itens;

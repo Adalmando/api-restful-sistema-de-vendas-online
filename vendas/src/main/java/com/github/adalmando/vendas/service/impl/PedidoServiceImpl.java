@@ -4,17 +4,22 @@ import com.github.adalmando.vendas.domain.entity.Cliente;
 import com.github.adalmando.vendas.domain.entity.ItemPedido;
 import com.github.adalmando.vendas.domain.entity.Pedido;
 import com.github.adalmando.vendas.domain.entity.Produto;
+import com.github.adalmando.vendas.domain.enums.StatusPedido;
 import com.github.adalmando.vendas.domain.repository.ClienteRepository;
 import com.github.adalmando.vendas.domain.repository.ItemRepository;
 import com.github.adalmando.vendas.domain.repository.PedidoRepository;
 import com.github.adalmando.vendas.domain.repository.ProdutoRepository;
+import com.github.adalmando.vendas.exception.PedidoNaoEncontradoException;
 import com.github.adalmando.vendas.exception.RegraNegocioException;
 import com.github.adalmando.vendas.rest.dto.ItemPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.PedidoDTO;
 import com.github.adalmando.vendas.service.PedidoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,8 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class PedidoServiceImpl implements PedidoService {
+        public class PedidoServiceImpl implements PedidoService {
 
     private PedidoRepository pedidoRepository;
     private ClienteRepository clienteRepository;
@@ -53,12 +57,14 @@ public class PedidoServiceImpl implements PedidoService {
         Pedido pedido = new Pedido();
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
+        pedido.setStatus(StatusPedido.REALIZADO);
         pedido.setCliente(cliente);
 
         List<ItemPedido> itensPedido = converterItens(pedido, dto.getItens());
-        pedidoRepository.save(pedido);
         itemRepository.saveAll(itensPedido);
         pedido.setItens(itensPedido);
+
+        pedidoRepository.save(pedido);
         return pedido;
     }
 
@@ -87,5 +93,14 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id){
         return pedidoRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        pedidoRepository
+                .findById(id)
+                .map(pedido -> {pedido.setStatus(statusPedido);
+                return pedidoRepository.save(pedido);})
+                .orElseThrow( () -> new PedidoNaoEncontradoException());
     }
 }

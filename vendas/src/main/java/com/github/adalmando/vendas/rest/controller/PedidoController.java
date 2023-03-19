@@ -2,11 +2,14 @@ package com.github.adalmando.vendas.rest.controller;
 
 import com.github.adalmando.vendas.domain.entity.ItemPedido;
 import com.github.adalmando.vendas.domain.entity.Pedido;
+import com.github.adalmando.vendas.domain.enums.StatusPedido;
+import com.github.adalmando.vendas.rest.dto.AtualizacaoStatusPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.InformacaoItemPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.InformacoesPedidoDTO;
 import com.github.adalmando.vendas.rest.dto.PedidoDTO;
 import com.github.adalmando.vendas.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +57,7 @@ public class PedidoController {
                 .cpf(pedido.getCliente().getCpf())
                 .nomeCliente(pedido.getCliente().getNome())
                 .totalPedido(pedido.getTotal())
+                .status(pedido.getStatus().name()) //método name retorna o string do enum
                 .itens(converter(pedido.getItens()))
                 .build();
     }
@@ -69,6 +73,12 @@ public class PedidoController {
                 .quantidade(item.getQuantidade())
                 .build())
                 .collect(Collectors.toList()); // transforma o return em uma list.
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id , @RequestBody AtualizacaoStatusPedidoDTO dto){
+        pedidoService.atualizaStatus(id, StatusPedido.valueOf(dto.getNovoStatus())); //estou setando o novo status para o tipo enum.
     }
 }
 
